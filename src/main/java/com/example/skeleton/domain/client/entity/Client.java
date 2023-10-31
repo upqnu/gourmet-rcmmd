@@ -31,13 +31,21 @@ public class Client {
     private Location location;
 
     @Enumerated(value = EnumType.STRING)
-    private Permission isAllowed;
+    private Permission permission;
 
     @Builder
-    public Client(String clientId, String password, Location location) {
+    public Client(String clientId, String password) {
         this.clientId = clientId;
         this.password = password;
+        this.location = new Location();
+        this.permission = Permission.UNALLOWED;
+    }
+
+    public void setLocation(Location location) {
         this.location = location;
-        this.isAllowed = Permission.UNALLOWED;
+    }
+
+    public void allowRecommendation() {
+        this.permission = Permission.ALLOWED;
     }
 }
