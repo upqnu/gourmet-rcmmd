@@ -17,6 +17,11 @@ public class DistrictController {
 
     private final DistrictService districtService;
 
+    @GetMapping
+    public ResponseEntity<List<District>> getAllDistricts() {
+        return ResponseEntity.ok(districtService.getAllDistricts());
+    }
+
     /**
      * 시군구 위도, 경도 데이터를 담은 csv 업로드
      * @param file - MultipartFile : csv file

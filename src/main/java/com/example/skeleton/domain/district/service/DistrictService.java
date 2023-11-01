@@ -20,6 +20,10 @@ public class DistrictService {
 
     private final DistrictRepository districtRepository;
 
+    public List<District> getAllDistricts() {
+        return districtRepository.findAll();
+    }
+
     /**
      * 시군구 위도, 경도 데이터를 담은 csv 업로드
      * @param file - MultipartFile : csv file
