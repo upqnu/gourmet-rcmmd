@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @Ignore
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = SkeletonApplication.class)
+@SpringBootTest(classes = LocationGourmetApplication.class)
 @AutoConfigureMockMvc
 @Transactional
 public abstract class IntegrationTest {
