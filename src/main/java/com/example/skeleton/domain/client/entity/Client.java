@@ -1,5 +1,7 @@
 package com.example.skeleton.domain.client.entity;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -28,11 +30,16 @@ public class Client {
     private String password;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "latitude", column = @Column(length = 20)),
+            @AttributeOverride(name = "longitude", column = @Column(length = 20))
+    })
     private Location location;
 
     @Enumerated(value = EnumType.STRING)
     private Permission permission;
 
+    // 회원 가입에 사용
     @Builder
     public Client(String clientId, String password) {
         this.clientId = clientId;
@@ -45,7 +52,7 @@ public class Client {
         this.location = location;
     }
 
-    public void allowRecommendation() {
-        this.permission = Permission.ALLOWED;
+    public void setPermission(Permission permission) {
+        this.permission = permission;
     }
 }
