@@ -3,6 +3,7 @@ package com.example.skeleton.domain.district.controller;
 import com.example.skeleton.domain.district.entity.District;
 import com.example.skeleton.domain.district.service.DistrictService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,11 +28,11 @@ public class DistrictController {
      * @param file - MultipartFile : csv file
      * */
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadSggCsv(
+    public ResponseEntity<Void> uploadSggCsv(
             @RequestParam("file")
             MultipartFile file) throws IOException {
 
         districtService.uploadSggCsv(file);
-        return ResponseEntity.ok("");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
