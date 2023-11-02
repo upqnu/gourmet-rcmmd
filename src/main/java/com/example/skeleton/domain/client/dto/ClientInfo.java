@@ -9,7 +9,6 @@ import lombok.Getter;
 
 @Builder
 @Getter
-@Embeddable
 public class ClientInfo {
     private String clientId;
     private Location location;

@@ -12,7 +12,6 @@ import lombok.Getter;
 @Getter
 public class ClientResponseDto {
 
-    @Embedded
     private ClientInfo data;
     private Integer status;
     private String message;
