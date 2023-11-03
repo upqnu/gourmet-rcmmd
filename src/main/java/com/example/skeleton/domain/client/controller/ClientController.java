@@ -16,7 +16,7 @@ import com.example.skeleton.domain.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api/clients")
 @RestController
 public class ClientController {
 
