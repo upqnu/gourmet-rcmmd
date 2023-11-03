@@ -1,4 +1,4 @@
-package com.example.skeleton.global.schedule;
+package com.example.skeleton.global.schedule.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,5 +10,5 @@ public enum OpenApiUrlPath {
     JAPAN("Genrestrtjpnfood"),
     FASTFOOD("Genrestrtfastfood");
 
-    private String url;
+    private String path;
 }

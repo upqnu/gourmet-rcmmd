@@ -3,6 +3,7 @@ package com.example.skeleton.global.schedule;
 import com.example.skeleton.domain.gourmet.entity.Gourmet;
 import com.example.skeleton.global.model.Address;
 import com.example.skeleton.global.model.Point;
+import com.example.skeleton.global.schedule.model.OpenApiType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -24,14 +25,14 @@ public class WebClientService {
 
     @Value("${open-api.secret-key}")
     private String openApiSecretKey;
+    @Value("${open-api.url}")
+    private String url;
     private static final int DEFAULT_PAGE_INDEX = 1;
     private static final int PAGE_SIZE = 1000;
-    private static final String TYPE = "json";
 
-    public List<Gourmet> post(String url, String path, int pageIndex) {
-        ExchangeStrategies exchangeStrategies = ExchangeStrategies.builder()
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024))
-                .build();
+    private final ExchangeStrategies exchangeStrategies;
+
+    public List<Gourmet> post(String path, int pageIndex) {
 
         WebClient webClient = WebClient.builder()
                 .exchangeStrategies(exchangeStrategies)
@@ -41,7 +42,7 @@ public class WebClientService {
         String block = webClient.post()
                 .uri(uriBuilder ->
                         uriBuilder.path("/" + path)
-                                .queryParam("type", TYPE)
+                                .queryParam("type", OpenApiType.JSON.getType())
                                 .queryParam("pIndex", pageIndex)
                                 .queryParam("pSize", PAGE_SIZE)
                                 .queryParam("KEY", openApiSecretKey)
@@ -60,8 +61,6 @@ public class WebClientService {
             JSONObject jsonRow = (JSONObject) jsonResponse.get(1);
             JSONArray jsonRowArray = (JSONArray) jsonRow.get("row");
 
-
-
             result = jsonRowArray.stream().map(row ->
                             makeGourmetEntity((JSONObject) row))
                     .toList();
@@ -69,16 +68,12 @@ public class WebClientService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        log.info("result size::{}", result.size());
+
         return result;
     }
 
-    public long getOpenApiTotalPage(String url, String path) {
+    public long getOpenApiTotalPage(String path) {
         long r = 0;
-
-        ExchangeStrategies exchangeStrategies = ExchangeStrategies.builder()
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024))
-                .build();
 
         WebClient webClient = WebClient.builder()
                 .exchangeStrategies(exchangeStrategies)
@@ -88,7 +83,7 @@ public class WebClientService {
         String block = webClient.post()
                 .uri(uriBuilder ->
                         uriBuilder.path("/" + path)
-                                .queryParam("type", TYPE)
+                                .queryParam("type", OpenApiType.JSON.getType())
                                 .queryParam("pIndex", DEFAULT_PAGE_INDEX)
                                 .queryParam("pSize", PAGE_SIZE)
                                 .queryParam("KEY", openApiSecretKey)
@@ -120,9 +115,7 @@ public class WebClientService {
 
         if (total == null || total == 0) return 0;
 
-        return total % PAGE_SIZE == 0 ?
-                (total / PAGE_SIZE) :
-                (total / PAGE_SIZE) + 1;
+        return total % PAGE_SIZE == 0 ? (total / PAGE_SIZE) : (total / PAGE_SIZE) + 1;
     }
 
 
