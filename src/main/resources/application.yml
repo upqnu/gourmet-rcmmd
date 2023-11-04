@@ -1,4 +1,18 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+  h2:
+    console:
+      enabled: true
 
+jwt:
+  header: Authorization
+  secret: bG9jYXRpb24tYmFzZWQtZ291cm1ldC1yZWNvbW1lbmRhdGlvbi1wcm9qZWN0
+  expiration:
+    access : 86400
+    refresh : 604800
 
 springdoc:
   packages-to-scan: com.example.socialmediafeed.domain # 스캔할 패키지의 목록을 설정. 콤마로 구분된 패키지 이름 목록을 제공하여 특정 패키지만 스캔하도록 설정할 수 있습니다.

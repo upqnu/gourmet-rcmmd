@@ -1,5 +1,9 @@
 package com.example.skeleton.domain.client.controller;
 
+import com.example.skeleton.domain.client.dto.ClientSignInRequestDto;
+import com.example.skeleton.domain.client.service.ClientSignInService;
+import com.example.skeleton.domain.jwt.dto.AccessTokenCreationResponseDto;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,16 +20,25 @@ import com.example.skeleton.domain.client.service.ClientService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api/clients")
 @RestController
 public class ClientController {
 
     private final ClientService clientService;
+    private final ClientSignInService clientSignInService;
 
     @PostMapping("/sign-up")
     public ResponseEntity<ClientResponseDto> signUp(@RequestBody ClientRequestDto resqDto) {
         ClientResponseDto respDto = clientService.signUp(resqDto);
         return ResponseEntity.status(respDto.getStatus()).body(respDto);
+    }
+
+    @PostMapping("/sign-in")
+    public ResponseEntity<AccessTokenCreationResponseDto> signIn(
+            @RequestBody
+            @Valid
+            ClientSignInRequestDto clientSignInRequestDto) {
+        return ResponseEntity.ok(clientSignInService.signIn(clientSignInRequestDto));
     }
 
     @PutMapping
