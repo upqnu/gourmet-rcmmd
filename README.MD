@@ -1,9 +1,6 @@
 ![logo](https://static.wanted.co.kr/images/events/3178/58ac3248.jpg)
 
-# 프로젝트명
-프로젝트 관련 설명
-
-<br/>
+# 지리기반 맛집 추천 웹 서비스
 
 ## Table of Contents
 - [개요](#개요)
@@ -21,7 +18,8 @@
 
 
 ## 개요
-이 서비스가 어떠한 배경에서 발견한 문제상황을 해결하기 위해 시작되었는지 및 어떠한 방법으로 해당 문제를 해결하려 하는지 등 ... To use a badge:
+본 서비스는 공공데이터를 활용하여, 지역 음식점 목록을 자동으로 업데이트 하고 이를 활용한다. 사용자 위치에맞게 맛집 및 메뉴를 추천하여 더 나은 다양한 음식 경험을 제공하고, 음식을 좋아하는 사람들 간의 소통과 공유를 촉진하려 합니다.
+
 - Via Github
     1. Press `Ctrl` + `f` on your keyboard, to bring out the search modal.
     1. Enter the name of the badge you need.
