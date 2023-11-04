@@ -16,3 +16,9 @@ springdoc:
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: alpha
+jwt:
+  header: Authorization
+  secret: bG9jYXRpb24tYmFzZWQtZ291cm1ldC1yZWNvbW1lbmRhdGlvbi1wcm9qZWN0
+  expiration:
+    access : 86400
+    refresh : 604800
