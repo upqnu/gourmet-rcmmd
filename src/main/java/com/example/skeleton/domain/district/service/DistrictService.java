@@ -1,17 +1,19 @@
 package com.example.skeleton.domain.district.service;
 
-import com.example.skeleton.domain.client.entity.Location;
-import com.example.skeleton.domain.district.entity.District;
-import com.example.skeleton.domain.district.repository.DistrictRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.skeleton.domain.district.entity.District;
+import com.example.skeleton.domain.district.repository.DistrictRepository;
+import com.example.skeleton.global.model.Point;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -44,7 +46,7 @@ public class DistrictService {
 
                 // District 객체를 생성해 리스트에 추가합니다.
                 districtList.add(
-                        District.of((long) i, columns[0], columns[1], Location.of(columns[3], columns[2]))
+                        District.of((long) i, columns[0], columns[1], Point.of(columns[3], columns[2]))
                 );
             }
         } catch (IOException e) {
