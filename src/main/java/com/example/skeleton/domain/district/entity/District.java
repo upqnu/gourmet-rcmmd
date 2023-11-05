@@ -1,6 +1,7 @@
 package com.example.skeleton.domain.district.entity;
 
-import com.example.skeleton.domain.client.entity.Location;
+import com.example.skeleton.global.model.Point;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -23,18 +24,18 @@ public class District {
     private String sgg;
 
     @Embedded
-    private Location location;
+    private Point point;
 
     protected District() {}
 
-    private District(Long id, String dosi, String sgg, Location location) {
+    private District(Long id, String dosi, String sgg, Point point) {
         this.id = id;
         this.dosi = dosi;
         this.sgg = sgg;
-        this.location = location;
+        this.point = point;
     }
 
-    public static District of(Long id, String dosi, String sgg, Location location) {
-        return new District(id, dosi, sgg, location);
+    public static District of(Long id, String dosi, String sgg, Point point) {
+        return new District(id, dosi, sgg, point);
     }
 }
