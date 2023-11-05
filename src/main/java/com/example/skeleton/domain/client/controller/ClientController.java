@@ -28,8 +28,8 @@ public class ClientController {
     private final ClientSignInService clientSignInService;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<ClientResponseDto> signUp(@RequestBody ClientRequestDto resqDto) {
-        ClientResponseDto respDto = clientService.signUp(resqDto);
+    public ResponseEntity<ClientResponseDto> signUp(@RequestBody ClientRequestDto reqDto) {
+        ClientResponseDto respDto = clientService.signUp(reqDto);
         return ResponseEntity.status(respDto.getStatus()).body(respDto);
     }
 
@@ -42,8 +42,8 @@ public class ClientController {
     }
 
     @PutMapping
-    public ResponseEntity<ClientResponseDto> setClientInfo(@RequestBody ClientRequestDto resqDto) {
-        ClientResponseDto respDto = clientService.setClientInfo(resqDto);
+    public ResponseEntity<ClientResponseDto> setClientInfo(@RequestBody ClientRequestDto reqDto) {
+        ClientResponseDto respDto = clientService.setClientInfo(reqDto);
         return ResponseEntity.status(respDto.getStatus()).body(respDto);
     }
 

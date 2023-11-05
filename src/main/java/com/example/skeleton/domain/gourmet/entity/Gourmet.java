@@ -11,7 +11,8 @@ import lombok.*;
 @Table(name = "Gourmet")
 @Entity
 public class Gourmet {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "gourmet_code", nullable = false, length = 250)
@@ -35,14 +36,14 @@ public class Gourmet {
     @Column(name = "rating")
     private Double rating;
 
-    //todo 시군구 엔티티와 연관관계 설정돼야 함
+    // todo 시군구 엔티티와 연관관계 설정돼야 함
 
     @Builder
     public Gourmet(String name,
-                   String category,
-                   Point point,
-                   Address address,
-                   String isOpen) {
+            String category,
+            Point point,
+            Address address,
+            String isOpen) {
         this.gourmetCode = makeGourmetCode(name, address);
         this.name = name;
         this.category = category;
@@ -50,6 +51,10 @@ public class Gourmet {
         this.address = address;
         this.isOpen = isOpen;
         this.rating = 0.0;
+    }
+
+    public void updateRating(double rating) {
+        this.rating = rating;
     }
 
     private String makeGourmetCode(String name, Address address) {
