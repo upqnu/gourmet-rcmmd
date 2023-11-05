@@ -3,8 +3,10 @@ package com.example.skeleton.domain.client.entity;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.util.Map;
+
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Embeddable
 public class Location {
@@ -18,5 +20,9 @@ public class Location {
      * */
     public static Location of(String latitude, String longitude) {
         return new Location(latitude, longitude);
+    }
+
+    public Map<String, String> toMap() {
+        return Map.of("latitude", this.latitude, "longitude", this.longitude);
     }
 }

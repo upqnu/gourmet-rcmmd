@@ -25,7 +25,7 @@ public class District {
     @Embedded
     private Location location;
 
-    private District() {}
+    protected District() {}
 
     private District(Long id, String dosi, String sgg, Location location) {
         this.id = id;
