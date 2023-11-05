@@ -27,12 +27,20 @@ public class ClientController {
     private final ClientService clientService;
     private final ClientSignInService clientSignInService;
 
+    /**
+     * 회원 가입
+     * @param resqDto
+     */
     @PostMapping("/sign-up")
     public ResponseEntity<ClientResponseDto> signUp(@RequestBody ClientRequestDto resqDto) {
         ClientResponseDto respDto = clientService.signUp(resqDto);
         return ResponseEntity.status(respDto.getStatus()).body(respDto);
     }
 
+    /**
+     * 로그인(동시에 액세스 토큰 발급)
+     * @param clientSignInRequestDto
+     */
     @PostMapping("/sign-in")
     public ResponseEntity<AccessTokenCreationResponseDto> signIn(
             @RequestBody
@@ -41,12 +49,20 @@ public class ClientController {
         return ResponseEntity.ok(clientSignInService.signIn(clientSignInRequestDto));
     }
 
+    /**
+     * 회원정보 수정
+     * @param resqDto
+     */
     @PutMapping
     public ResponseEntity<ClientResponseDto> setClientInfo(@RequestBody ClientRequestDto resqDto) {
         ClientResponseDto respDto = clientService.setClientInfo(resqDto);
         return ResponseEntity.status(respDto.getStatus()).body(respDto);
     }
 
+    /**
+     * 회원정보 조회
+     * @param clientId
+     */
     @GetMapping("/{clientId}")
     public ResponseEntity<ClientResponseDto> getClientInfo(@PathVariable String clientId) {
         ClientResponseDto respDto = clientService.getClientInfo(clientId);

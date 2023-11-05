@@ -10,8 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
@@ -29,17 +27,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        // 토큰이 필요하지 않은 API URI의 배열 구성
-        List<String> uriListWithoutToken = Arrays.asList(
-                "/swagger-ui/**", "/h2-console/**", "/api/clients/sign-up", "/api/clients/sign-in"
-        );
-
-        // 토큰이 필요하지 않은 URI들은 JWT 관련 로직을 거치지 않고 다음 필터로 이동
-        if (uriListWithoutToken.contains(request.getRequestURI())) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         // 요청 헤터의 AUTHORIZATION 키 값 조회
         String authorizationHeader = request.getHeader(HEADER_AUTHOR);
 
@@ -47,7 +34,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             // 가져온 값에서 TOKEN_PREFIX "Bearer "를 제거한 실제 토큰값
             String token = getAccessToken(authorizationHeader);
 
-            if (jwtTokenProvider.validToken(token)) {
+            if (jwtTokenProvider.validateToken(token)) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
