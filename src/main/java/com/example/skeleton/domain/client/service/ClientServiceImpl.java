@@ -9,7 +9,6 @@ import com.example.skeleton.domain.client.dto.ClientInfo;
 import com.example.skeleton.domain.client.dto.ClientRequestDto;
 import com.example.skeleton.domain.client.dto.ClientResponseDto;
 import com.example.skeleton.domain.client.entity.Client;
-import com.example.skeleton.domain.client.entity.Location;
 import com.example.skeleton.domain.client.repository.ClientRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -56,11 +55,7 @@ public class ClientServiceImpl implements ClientService {
         public ClientResponseDto setClientInfo(ClientRequestDto dto) {
                 Client client = clientRepo.findByClientId(dto.getClientId()).get();
 
-                client.setLocation(Location.builder()
-                                .latitude(dto.getLatitude())
-                                .longitude(dto.getLongitude())
-                                .build());
-
+                client.setPoint(dto.getLatitude(), dto.getLongitude());
                 client.setPermission(dto.getPermission());
 
                 clientRepo.save(client);
@@ -78,7 +73,7 @@ public class ClientServiceImpl implements ClientService {
                 return ClientResponseDto.builder()
                                 .data(ClientInfo.builder()
                                                 .clientId(client.getClientId())
-                                                .location(client.getLocation())
+                                                .point(client.getPoint())
                                                 .permission(client.getPermission())
                                                 .build())
                                 .message("회원 정보 조회 성공")
