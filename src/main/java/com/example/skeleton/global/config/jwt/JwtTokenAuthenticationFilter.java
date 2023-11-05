@@ -10,6 +10,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
@@ -29,13 +31,16 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
         // 요청 헤터의 AUTHORIZATION 키 값 조회
         String authorizationHeader = request.getHeader(HEADER_AUTHOR);
-        // 가져온 값에서 TOKEN_PREFIX "Bearer "를 제거한 실제 토큰값
-        String token = getAccessToken(authorizationHeader);
 
-        // 가져온 토큰이 유효한지 확인하고, 유효한 때는 인증 정보를 설정
-        if (jwtTokenProvider.validToken(token)) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (authorizationHeader != null && !authorizationHeader.equalsIgnoreCase("")) {
+            // 가져온 값에서 TOKEN_PREFIX "Bearer "를 제거한 실제 토큰값
+            String token = getAccessToken(authorizationHeader);
+
+            if (jwtTokenProvider.validToken(token)) {
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
         }
 
         filterChain.doFilter(request, response);
