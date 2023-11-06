@@ -1,6 +1,7 @@
 package com.example.skeleton.global.schedule;
 
 import com.example.skeleton.domain.gourmet.entity.Gourmet;
+import com.example.skeleton.domain.gourmet.model.DistrictInfo;
 import com.example.skeleton.domain.gourmet.model.Employee;
 import com.example.skeleton.global.model.Address;
 import com.example.skeleton.global.model.Point;
@@ -120,6 +121,7 @@ public class WebClientService {
         return total % PAGE_SIZE == 0 ? (total / PAGE_SIZE) : (total / PAGE_SIZE) + 1;
     }
 
+
     public Gourmet makeGourmetEntity(JSONObject item) {
         return Gourmet.builder()
                 .name((String) item.get("BIZPLC_NM"))
@@ -129,6 +131,7 @@ public class WebClientService {
                         (String) item.get("REFINE_LOTNO_ADDR"),
                         (String) item.get("REFINE_ZIP_CD")))
                 .employee(Employee.convertToEmployee(item))
+                .districtInfo(DistrictInfo.convertToDistrictInfo(item))
                 .isOpen((String) item.get("BSN_STATE_NM"))
                 .build();
     }
