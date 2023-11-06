@@ -7,19 +7,21 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.security.Key;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+@Slf4j
 @Component
 public class JwtTokenProvider implements InitializingBean {
 
@@ -41,7 +43,7 @@ public class JwtTokenProvider implements InitializingBean {
     public JwtTokenProvider(
             @Value("${jwt.secret}") String secret,
             @Value("86400") Long accessTokenDuration,
-            @Value("864000") Long refreshTokenDuration
+            @Value("604800") Long refreshTokenDuration
     ) {
         this.SECRET = secret;
         this.ACCESS_TOKEN_DURATION_MS = accessTokenDuration * 1000;
@@ -77,7 +79,7 @@ public class JwtTokenProvider implements InitializingBean {
      * @param expiry
      */
     private String createToken(Client client, Date expiry) {
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setSubject(client.getClientId())
                 .setExpiration(expiry)
                 .setIssuedAt(new Date())
@@ -85,20 +87,27 @@ public class JwtTokenProvider implements InitializingBean {
                 .addClaims(Map.of("clientId", client.getClientId()))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
+        return token;
     }
 
     /**
      * 토큰이 유효한 지 확인
      * @param token
      */
-    public boolean validToken(String token) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()
                     .parseClaimsJws(token);
+            log.info("토큰 : {}", token);
             return true;
         } catch (ExpiredJwtException e) {
+            log.info("JWT토큰 사용기한이 만료되었습니다 : {}", token);
+            return false;
+        } catch (Exception e) {
+            log.info("JWT토큰이 유효하지 않습니다 : {} / {}", token, e);
             return false;
         }
     }
@@ -108,17 +117,30 @@ public class JwtTokenProvider implements InitializingBean {
      * @param token
      */
     public Authentication getAuthentication(String token) {
+
         Claims claims = getClaims(token);
 
-        Set<SimpleGrantedAuthority> authority = Collections.singleton(
-                new SimpleGrantedAuthority(claims.get(AUTH).toString())
-        );
+        if (claims != null) {
+            String authValue = claims.get(AUTH, String.class);
 
-        return new UsernamePasswordAuthenticationToken(
-                new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authority),
-                token,
-                authority
-        );
+            if (authValue != null && !authValue.isEmpty()) {
+                Set<SimpleGrantedAuthority> authority = Collections.singleton(
+                        new SimpleGrantedAuthority(authValue)
+                );
+
+                return new UsernamePasswordAuthenticationToken(
+                        new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authority),
+                        token,
+                        authority
+                );
+            } else {
+                log.info("JWT토큰이 권한 정보를 포함하고 있지 않습니다.");
+                return null;
+            }
+        } else {
+            log.info("JWT토큰의 클레임이 존재하지 않습니다(null).");
+            return null;
+        }
     }
 
     /**
@@ -131,6 +153,30 @@ public class JwtTokenProvider implements InitializingBean {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    /**
+     * 액세스 토큰의 claim에서 clientId를 가져오기
+     */
+    public String getClientIdFromToken() {
+
+        try {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            String authorizationHeader = request.getHeader("Authorization");
+
+            if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+                String token = authorizationHeader.substring(7); // "Bearer " 프리픽스 제거
+                Claims claims = getClaims(token);
+                return claims.get("clientId", String.class);
+            } else {
+                log.info("사용자 인증에 필요한 JWT토큰이 없거나 제대로 된 형태가 아닙니다.");
+                return null;
+            }
+        } catch (Exception e) {
+            log.info("사용자 인증을 위한 토큰에 문제가 있습니다.");
+            return null;
+        }
+
     }
 
 }

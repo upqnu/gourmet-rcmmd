@@ -18,11 +18,10 @@ import lombok.RequiredArgsConstructor;
 public class ClientServiceImpl implements ClientService {
 
         private final ClientRepository clientRepo;
-//        private final PasswordEncoder passwordEncoder;
+        private final PasswordEncoder passwordEncoder;
 
         @Override
         public ClientResponseDto signUp(ClientRequestDto dto) {
-                PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
                 // 아이디 중복 체크
                 if (clientRepo.existsByClientId(dto.getClientId())) {

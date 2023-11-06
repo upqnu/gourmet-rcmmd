@@ -10,8 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 @RequiredArgsConstructor
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
@@ -36,7 +34,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             // 가져온 값에서 TOKEN_PREFIX "Bearer "를 제거한 실제 토큰값
             String token = getAccessToken(authorizationHeader);
 
-            if (jwtTokenProvider.validToken(token)) {
+            if (jwtTokenProvider.validateToken(token)) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }

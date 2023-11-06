@@ -18,6 +18,10 @@ public class ClientSignInService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * 로그인 & 동시에 액세스 토큰 발급
+     * @param clientSignInRequestDto
+     */
     public AccessTokenCreationResponseDto signIn(ClientSignInRequestDto clientSignInRequestDto) {
         Client client = clientRepository.findByClientId(clientSignInRequestDto.getClientId())
                 .orElseThrow(() -> new EntityNotFoundException("클라이언트를 찾을 수 없습니다."));
