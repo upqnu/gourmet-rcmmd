@@ -7,10 +7,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,15 +27,21 @@ public class DistrictService {
     @Autowired
     RedisTemplate<String, String> redisTemplate;
 
-    public List<District> getAllDistricts() {
+    /**
+     * caching을 이용하지 않고 DB에서 시군구 조회
+     * */
+    public List<District> getAllDistrictsWithoutRedis() {
         return districtRepository.findAll();
     }
 
-    public List<District> getAllDistrictsWithoutRedis() {
-        HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
-
-
-        return null;
+    /**
+     * caching을 통한 시군구 조회
+     * */
+    // Cacheable의 value, key 속성을 합쳐서 redis의 키가 생성됩니다. ex) value::key
+    // unless : 캐싱 조건 설정, Spring Expression Language (SpEL) expression으로 작성해야합니다.
+    @Cacheable(value = "District", unless = "#result == null")
+    public List<District> getAllDistricts() {
+        return districtRepository.findAll();
     }
 
     /**
@@ -44,6 +49,7 @@ public class DistrictService {
      * @param file - MultipartFile : csv file
      * */
     @Transactional
+    @CacheEvict(value = "District")
     public void uploadSggCsv(MultipartFile file) throws IOException {
 
         List<District> districtList = new ArrayList<>();
@@ -78,6 +84,7 @@ public class DistrictService {
         cachingSggInRedis(districtList);*/
     }
 
+    // redisTemplate를 이용한 캐싱 입니다. 처음에 사용했다가 @Cacheable을 사용하기 위해 주석처리했습니다.
 /*    private void cachingSggInRedis(List<District> districtList) {
 
         HashOperations<String, String, String> hashOperations = redisTemplate.opsForHash();
@@ -85,7 +92,7 @@ public class DistrictService {
         for(District district : districtList) {
             // key : District::{dosi}::{sgg}
             String key = "District::" + district.getDosi() + "::" + district.getSgg();
-            hashOperations.putAll(key, district.getLocation().toMap());
+            hashOperations.putAll(key, district.getPoint().toMap());
         }
     }*/
 }
