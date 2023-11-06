@@ -2,9 +2,13 @@ package com.example.skeleton.domain.gourmet.service;
 
 import com.example.skeleton.domain.gourmet.entity.Gourmet;
 import com.example.skeleton.domain.gourmet.repository.GourmetRepository;
+import com.example.skeleton.domain.rating.entity.Rating;
+import com.example.skeleton.domain.rating.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 // todo : Interface 구현
 @Service
@@ -13,9 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class GourmetService {
 
     private final GourmetRepository gourmetRepository;
+    private final RatingRepository ratingRepository;
 
     public Gourmet getGourmet(Long id) {
         return verifiedGourmet(id);
+    }
+
+    public List<Rating> getRatingList(Long id) {
+        return ratingRepository.findAllByGourmet(verifiedGourmet(id));
     }
 
     private Gourmet verifiedGourmet(Long id) {
