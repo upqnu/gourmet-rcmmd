@@ -1,6 +1,7 @@
 package com.example.skeleton.domain.rating.entity;
 
 import com.example.skeleton.domain.client.entity.Client;
+import com.example.skeleton.domain.gourmet.entity.Gourmet;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -26,16 +27,19 @@ public class Rating {
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
-    // to do : Gourmet FK 추가
+    @ManyToOne(optional = false, cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "gourmet_id", nullable = false)
+    private Gourmet gourmet;
 
-    private int point;
+    private Integer score;
 
     private String content;
 
     @Builder
-    public Rating(Client client, int point, String content) {
+    public Rating(Client client, Gourmet gourmet, Integer score, String content) {
         this.client = client;
-        this.point = point;
+        this.gourmet = gourmet;
+        this.score = score;
         this.content = content;
     }
 }
