@@ -1,5 +1,6 @@
 package com.example.skeleton.domain.gourmet.service;
 
+import com.example.skeleton.domain.gourmet.dto.GourmetDistanceResponseDto;
 import com.example.skeleton.domain.gourmet.entity.Gourmet;
 import com.example.skeleton.domain.gourmet.repository.GourmetRepository;
 import com.example.skeleton.domain.rating.entity.Rating;
@@ -25,6 +26,10 @@ public class GourmetService {
 
     public List<Rating> getRatingList(Long id) {
         return ratingRepository.findAllByGourmet(verifiedGourmet(id));
+    }
+
+    public List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range, String sort) {
+        return gourmetRepository.getGourmetDtoByLocation(lat, lon, range, sort);
     }
 
     private Gourmet verifiedGourmet(Long id) {

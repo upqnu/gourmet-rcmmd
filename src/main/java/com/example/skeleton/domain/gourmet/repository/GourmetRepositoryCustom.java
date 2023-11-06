@@ -1,13 +1,12 @@
-package com.example.socialmediafeed.domain.statistics.repository;
+package com.example.skeleton.domain.gourmet.repository;
 
-import com.example.socialmediafeed.domain.statistics.dto.StatisticsResponseDto;
+import com.example.skeleton.domain.gourmet.dto.GourmetDistanceResponseDto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-public interface StatisticsRepositoryCustom {
+public interface GourmetRepositoryCustom {
 
-    List<StatisticsResponseDto> getStatistics(String hashtag, Map<LocalDateTime, LocalDateTime> dateTimeMap, String value);
+    List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range, String sort);
 }
