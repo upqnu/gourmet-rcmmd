@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.*;
 
+import java.util.Map;
+
 @ToString
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,6 +21,10 @@ public class Point {
 
     public static Point of(String latitude, String longitude) {
         return new Point(latitude, longitude);
+    }
+
+    public Map<String, String> toMap() {
+        return Map.of("latitude", this.latitude, "longitude", this.longitude);
     }
 
 }
