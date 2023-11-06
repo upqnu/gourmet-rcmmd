@@ -25,7 +25,7 @@ public class Gourmet {
     private String category;
 
     @Embedded
-    private Point point;it
+    private Point point;
 
     @Embedded
     private Address address;
