@@ -1,5 +1,6 @@
 package com.example.skeleton.domain.gourmet.entity;
 
+import com.example.skeleton.domain.gourmet.model.Employee;
 import com.example.skeleton.global.model.Address;
 import com.example.skeleton.global.model.Point;
 import jakarta.persistence.*;
@@ -30,6 +31,9 @@ public class Gourmet {
     @Embedded
     private Address address;
 
+    @Embedded
+    private Employee employee;
+
     @Column(name = "is_open")
     private String isOpen;
 
@@ -43,12 +47,14 @@ public class Gourmet {
             String category,
             Point point,
             Address address,
+            Employee employee,
             String isOpen) {
         this.gourmetCode = makeGourmetCode(name, address);
         this.name = name;
         this.category = category;
         this.point = point;
         this.address = address;
+        this.employee = employee;
         this.isOpen = isOpen;
         this.rating = 0.0;
     }
@@ -59,11 +65,13 @@ public class Gourmet {
 
     private String makeGourmetCode(String name, Address address) {
         StringBuilder builder = new StringBuilder();
+
         builder.append(name)
                 .append("-")
                 .append(address.getLotNumber())
                 .append("-")
                 .append(address.getZipCode());
+
         return builder.toString();
     }
 }
