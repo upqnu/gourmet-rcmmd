@@ -26,9 +26,11 @@ public class QRating extends EntityPathBase<Rating> {
 
     public final StringPath content = createString("content");
 
+    public final com.example.skeleton.domain.gourmet.entity.QGourmet gourmet;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Integer> point = createNumber("point", Integer.class);
+    public final NumberPath<Integer> score = createNumber("score", Integer.class);
 
     public QRating(String variable) {
         this(Rating.class, forVariable(variable), INITS);
@@ -49,6 +51,7 @@ public class QRating extends EntityPathBase<Rating> {
     public QRating(Class<? extends Rating> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.client = inits.isInitialized("client") ? new com.example.skeleton.domain.client.entity.QClient(forProperty("client"), inits.get("client")) : null;
+        this.gourmet = inits.isInitialized("gourmet") ? new com.example.skeleton.domain.gourmet.entity.QGourmet(forProperty("gourmet"), inits.get("gourmet")) : null;
     }
 
 }
