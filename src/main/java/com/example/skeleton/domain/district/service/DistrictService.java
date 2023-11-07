@@ -7,7 +7,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -38,8 +37,9 @@ public class DistrictService {
      * caching을 통한 시군구 조회
      * */
     // Cacheable의 value, key 속성을 합쳐서 redis의 키가 생성됩니다. ex) value::key
+    // value는 CacheConfig에서 설정한 keyName
     // unless : 캐싱 조건 설정, Spring Expression Language (SpEL) expression으로 작성해야합니다.
-    @Cacheable(value = "District", unless = "#result == null")
+    @Cacheable(value = "district", key = "'allDistricts'", unless = "#result == null")
     public List<District> getAllDistricts() {
         return districtRepository.findAll();
     }
@@ -49,7 +49,6 @@ public class DistrictService {
      * @param file - MultipartFile : csv file
      * */
     @Transactional
-    @CacheEvict(value = "District")
     public void uploadSggCsv(MultipartFile file) throws IOException {
 
         List<District> districtList = new ArrayList<>();

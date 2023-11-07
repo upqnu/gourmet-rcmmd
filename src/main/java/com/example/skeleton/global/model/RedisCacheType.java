@@ -10,10 +10,9 @@ import java.time.Duration;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum RedisCacheType {
 
-    DEFAULT("default", Duration.ofDays(365)),
-
-    GOURMET("gourmet", Duration.ofHours(3)),
-    CLIENT("client", Duration.ofMinutes(10));
+    DISTRICT("district", Duration.ofDays(365L)),
+    GOURMET("gourmet", Duration.ofHours(3L)),
+    CLIENT("client", Duration.ofMinutes(10L));
 
     private final String keyName;
     private final Duration duration;

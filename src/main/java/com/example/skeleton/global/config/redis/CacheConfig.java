@@ -1,5 +1,6 @@
 package com.example.skeleton.global.config.redis;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -23,7 +24,7 @@ public class CacheConfig {
     }
 
     @Bean
-    public RedisCacheManager redisCacheManager() {
+    public CacheManager cacheManager() {
 
         return RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)
@@ -41,8 +42,7 @@ public class CacheConfig {
 
         return RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(SerializationPair.fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
-                .entryTtl(DEFAULT.getDuration());
+                .serializeValuesWith(SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
     }
 
     /**
@@ -52,6 +52,7 @@ public class CacheConfig {
 
         return Map.of(
                 // ENUM을 통해 추가적인 설정값을 관리합니다.
+                DISTRICT.getKeyName(), defaultConfiguration().entryTtl(DISTRICT.getDuration()),
                 CLIENT.getKeyName(), defaultConfiguration().entryTtl(CLIENT.getDuration()),
                 GOURMET.getKeyName(), defaultConfiguration().entryTtl(GOURMET.getDuration())
         );
