@@ -45,9 +45,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors().disable()
                 .headers(headers -> headers.frameOptions().sameOrigin())
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(jwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http
                 .authorizeHttpRequests(auth -> auth
@@ -60,7 +58,8 @@ public class SecurityConfig {
                         ).permitAll()
                         // 권한 설정이 필요한 페이지 확인 후 변경할 것
                         .anyRequest().permitAll()
-                );
+                )
+                .addFilterBefore(jwtTokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
