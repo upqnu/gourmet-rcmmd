@@ -1,6 +1,14 @@
 spring:
   jpa:
-#    show_sql: true
+#    show-sql: true
+
+  cache: # spring data cache 설정
+    type: redis
+    redis: # redis의 기본값은 localhost:6379입니다. redis-server를 설치해야 사용할 수 있습니다.
+      host: ${REDIS_HOST_URL}
+      port: ${REDIS_PORT}
+      cache-null-values: true # null 캐싱 여부
+
   h2:
     console:
       enabled: true
