@@ -18,8 +18,9 @@ public class ScheduledTasks {
     private final WebClientService webClientService;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 
+    @Scheduled(fixedRate = 60 * 1000)
     //매주 월요일 새벽 4시에 실행
-    @Scheduled(cron = "0 0 4 ? * MON", zone = "Asia/Seoul")
+//    @Scheduled(cron = "0 0 4 ? * MON", zone = "Asia/Seoul")
     public void reportCurrentTime() {
         //todo: Refactoring 할 예정
         log.info("Scheduling process start::{}", dateFormat.format(new Date()));
