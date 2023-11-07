@@ -6,6 +6,7 @@ import com.example.skeleton.domain.gourmet.model.Employee;
 import com.example.skeleton.global.model.Address;
 import com.example.skeleton.global.model.Point;
 import com.example.skeleton.global.schedule.model.OpenApiType;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONArray;
@@ -19,7 +20,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.ArrayList;
 import java.util.List;
 
-///todo: Refactoring 할 예정
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -27,20 +27,28 @@ public class WebClientService {
 
     @Value("${open-api.secret-key}")
     private String openApiSecretKey;
+
     @Value("${open-api.url}")
     private String url;
+
+    private WebClient webClient;
+
     private static final int DEFAULT_PAGE_INDEX = 1;
     private static final int PAGE_SIZE = 1000;
 
     private final ExchangeStrategies exchangeStrategies;
 
-
-    public List<Gourmet> post(String path, int pageIndex) {
-
-        WebClient webClient = WebClient.builder()
+    @PostConstruct
+    public void init() {
+        webClient = WebClient.builder()
                 .exchangeStrategies(exchangeStrategies)
                 .baseUrl(url)
                 .build();
+
+        log.info("WebClient init completed");
+    }
+
+    public List<Gourmet> post(String path, int pageIndex) {
 
         String block = webClient.post()
                 .uri(uriBuilder ->
@@ -77,11 +85,6 @@ public class WebClientService {
 
     public long getOpenApiTotalPage(String path) {
         long result = 0;
-
-        WebClient webClient = WebClient.builder()
-                .exchangeStrategies(exchangeStrategies)
-                .baseUrl(url)
-                .build();
 
         String block = webClient.post()
                 .uri(uriBuilder ->
@@ -120,7 +123,6 @@ public class WebClientService {
 
         return total % PAGE_SIZE == 0 ? (total / PAGE_SIZE) : (total / PAGE_SIZE) + 1;
     }
-
 
     public Gourmet makeGourmetEntity(JSONObject item) {
         return Gourmet.builder()

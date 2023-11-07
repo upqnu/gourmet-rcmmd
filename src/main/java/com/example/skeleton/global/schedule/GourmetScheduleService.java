@@ -26,6 +26,7 @@ public class GourmetScheduleService {
         gourmets.parallelStream()
                 .forEach(gourmet ->
                     gourmet.parallelStream()
+                            .filter(g -> g.getIsOpen().equals("영업"))
                             .forEach(g -> saveNotExistGourmet(g, updateCount)));
 
         log.info("Gourmet information updated completed::{}", updateCount.get());
