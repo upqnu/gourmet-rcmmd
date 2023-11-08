@@ -1,5 +1,7 @@
 package com.example.skeleton.domain.gourmet.entity;
 
+import com.example.skeleton.domain.gourmet.model.DistrictInfo;
+import com.example.skeleton.domain.gourmet.model.Employee;
 import com.example.skeleton.global.model.Address;
 import com.example.skeleton.global.model.Point;
 import jakarta.persistence.*;
@@ -30,25 +32,33 @@ public class Gourmet {
     @Embedded
     private Address address;
 
+    @Embedded
+    private Employee employee;
+
+    @Embedded
+    private DistrictInfo districtInfo;
+
     @Column(name = "is_open")
     private String isOpen;
 
     @Column(name = "rating")
     private Double rating;
 
-    // todo 시군구 엔티티와 연관관계 설정돼야 함
-
     @Builder
     public Gourmet(String name,
             String category,
             Point point,
             Address address,
+            Employee employee,
+            DistrictInfo districtInfo,
             String isOpen) {
         this.gourmetCode = makeGourmetCode(name, address);
         this.name = name;
         this.category = category;
         this.point = point;
         this.address = address;
+        this.employee = employee;
+        this.districtInfo = districtInfo;
         this.isOpen = isOpen;
         this.rating = 0.0;
     }
@@ -59,11 +69,15 @@ public class Gourmet {
 
     private String makeGourmetCode(String name, Address address) {
         StringBuilder builder = new StringBuilder();
+
         builder.append(name)
                 .append("-")
-                .append(address.getLotNumber())
+                .append(address.getLotNumber() == null ?
+                        "주소없음" : address.getLotNumber())
                 .append("-")
-                .append(address.getZipCode());
+                .append(address.getZipCode() == null ?
+                        "우편번호없음" : address.getZipCode());
+
         return builder.toString();
     }
 }

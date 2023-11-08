@@ -70,6 +70,15 @@ dependencies {
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+    // mapstruct
+    implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.4.2.Final"
+    annotationProcessor(
+            'org.projectlombok:lombok',
+            'org.projectlombok:lombok-mapstruct-binding:0.1.0',
+            'org.mapstruct:mapstruct-processor:1.4.2.Final'
+    )
+
     // MySql
     implementation 'org.springframework.boot:spring-boot-starter'
     runtimeOnly 'com.mysql:mysql-connector-j'
