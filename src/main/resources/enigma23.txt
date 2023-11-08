@@ -1,0 +1,6 @@
+100000
+Team-Enigma23Team-Enigma23Team-Enigma23
+
+문자를 암호화 값으로 변환하기 위한 코드
+String[] source = {};
+for(String str : source) log.info("plane :: {}, encrypt :: {}", str, encryptor.encrypt(str));
