@@ -37,8 +37,8 @@ public class GourmetService {
         return ratingRepository.findAllByGourmet(verifiedGourmet(id));
     }
 
-    public List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range, String sort) {
-        List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = gourmetRepository.getGourmetDtoByLocation(lat, lon, range);
+    public List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range, String sort, String search) {
+        List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = gourmetRepository.getGourmetDtoByLocation(lat, lon, range, search);
         if (!Objects.equals(sort, "rating")) {
             return gourmetDistanceResponseDtoList.stream().sorted(Comparator.comparing(GourmetDistanceResponseDto::getDistance)).collect(Collectors.toList());
         } else {

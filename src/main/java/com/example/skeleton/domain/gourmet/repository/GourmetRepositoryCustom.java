@@ -9,5 +9,5 @@ import java.util.Map;
 
 public interface GourmetRepositoryCustom {
 
-    List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range);
+    List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range, String search);
 }

@@ -23,11 +23,12 @@ public class GourmetRepositoryImpl implements GourmetRepositoryCustom {
     private final GourmetMapper gourmetMapper;
 
     @Override
-    public List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range) {
+    public List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range, String search) {
 
         List<Gourmet> gourmetList = queryFactory.select(gourmet)
                 .from(gourmet)
                 .orderBy(gourmet.rating.desc())
+                .where(gourmet.name.contains(search))
                 .fetch();
 
         List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = new ArrayList<>();

@@ -40,14 +40,15 @@ public class GourmetController {
 
     @GetMapping
     public ResponseEntity getGourmet( // todo : 필수 값 입력 안되면 에러 핸들링하기
-                  @RequestParam int page,
-                  @RequestParam int size,
+                  @RequestParam(defaultValue = "1") int page,
+                  @RequestParam(defaultValue = "20") int size,
+                  @RequestParam(defaultValue = "") String search,
                   @RequestParam String lat,
                   @RequestParam String lon,
                   @RequestParam Double range,
                   @RequestParam(required = false) String sort // default 값 거리순(distance) / 평점순(rating)
     ) {
-        List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = gourmetService.getGourmetDtoByLocation(lat, lon, range, sort);
+        List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = gourmetService.getGourmetDtoByLocation(lat, lon, range, sort, search);
         GourmetDistancePageResponseDto gourmetDistancePageResponseDto = gourmetService.getGourmetDistancePageResponseDto(page, size, gourmetDistanceResponseDtoList);
         return ResponseEntity.status(HttpStatus.OK).body(gourmetDistancePageResponseDto);
     }
