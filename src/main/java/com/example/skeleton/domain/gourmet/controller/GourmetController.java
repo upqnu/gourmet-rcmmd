@@ -1,6 +1,7 @@
 package com.example.skeleton.domain.gourmet.controller;
 
 import com.example.skeleton.domain.gourmet.dto.GourmetDetailResponseDto;
+import com.example.skeleton.domain.gourmet.dto.GourmetDistancePageResponseDto;
 import com.example.skeleton.domain.gourmet.dto.GourmetDistanceResponseDto;
 import com.example.skeleton.domain.gourmet.mapper.GourmetMapper;
 import com.example.skeleton.domain.gourmet.service.GourmetService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -38,13 +40,16 @@ public class GourmetController {
 
     @GetMapping
     public ResponseEntity getGourmet( // todo : 필수 값 입력 안되면 에러 핸들링하기
-            @RequestParam String lat,
-            @RequestParam String lon,
-            @RequestParam Double range,
-            @RequestParam(required = false) String sort // default 값 거리순(distance) / 평점순(rating)
+                  @RequestParam int page,
+                  @RequestParam int size,
+                  @RequestParam String lat,
+                  @RequestParam String lon,
+                  @RequestParam Double range,
+                  @RequestParam(required = false) String sort // default 값 거리순(distance) / 평점순(rating)
     ) {
         List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = gourmetService.getGourmetDtoByLocation(lat, lon, range, sort);
-        return ResponseEntity.status(HttpStatus.OK).body(gourmetDistanceResponseDtoList);
+        GourmetDistancePageResponseDto gourmetDistancePageResponseDto = gourmetService.getGourmetDistancePageResponseDto(page, size, gourmetDistanceResponseDtoList);
+        return ResponseEntity.status(HttpStatus.OK).body(gourmetDistancePageResponseDto);
     }
 
 }

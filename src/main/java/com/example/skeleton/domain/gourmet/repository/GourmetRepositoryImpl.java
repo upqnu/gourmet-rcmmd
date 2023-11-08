@@ -9,6 +9,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,7 +23,7 @@ public class GourmetRepositoryImpl implements GourmetRepositoryCustom {
     private final GourmetMapper gourmetMapper;
 
     @Override
-    public List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range, String sort) {
+    public List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range) {
 
         List<Gourmet> gourmetList = queryFactory.select(gourmet)
                 .from(gourmet)
