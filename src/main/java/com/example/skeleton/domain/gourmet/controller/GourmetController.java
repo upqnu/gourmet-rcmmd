@@ -41,7 +41,7 @@ public class GourmetController {
             @RequestParam String lat,
             @RequestParam String lon,
             @RequestParam Double range,
-            @RequestParam(required = false) String sort // default 값 거리순(location) / 평점순(rating)
+            @RequestParam(required = false) String sort // default 값 거리순(distance) / 평점순(rating)
     ) {
         List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = gourmetService.getGourmetDtoByLocation(lat, lon, range, sort);
         return ResponseEntity.status(HttpStatus.OK).body(gourmetDistanceResponseDtoList);

@@ -9,7 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 // todo : Interface 구현
 @Service
@@ -29,7 +32,13 @@ public class GourmetService {
     }
 
     public List<GourmetDistanceResponseDto> getGourmetDtoByLocation(String lat, String lon, Double range, String sort) {
-        return gourmetRepository.getGourmetDtoByLocation(lat, lon, range, sort);
+        List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = gourmetRepository.getGourmetDtoByLocation(lat, lon, range, sort);
+        if (!Objects.equals(sort, "rating")) {
+            return gourmetDistanceResponseDtoList.stream().sorted(Comparator.comparing(GourmetDistanceResponseDto::getDistance)).collect(Collectors.toList());
+        }
+        else {
+            return gourmetDistanceResponseDtoList;
+        }
     }
 
     private Gourmet verifiedGourmet(Long id) {

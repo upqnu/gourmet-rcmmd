@@ -3,6 +3,8 @@ package com.example.skeleton.domain.gourmet.repository;
 import com.example.skeleton.domain.gourmet.dto.GourmetDistanceResponseDto;
 import com.example.skeleton.domain.gourmet.entity.Gourmet;
 import com.example.skeleton.domain.gourmet.mapper.GourmetMapper;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +26,12 @@ public class GourmetRepositoryImpl implements GourmetRepositoryCustom {
 
         List<Gourmet> gourmetList = queryFactory.select(gourmet)
                 .from(gourmet)
+                .orderBy(gourmet.rating.desc())
                 .fetch();
 
         List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = new ArrayList<>();
         for (Gourmet gourmet : gourmetList) {
-            Double distance = distance(gourmet.getPoint().getLatitude(), gourmet.getPoint().getLongitude(), lat, lon, "kilometer");
+            Double distance = distance(gourmet.getPoint().getLatitude(), gourmet.getPoint().getLongitude(), lat, lon);
             if (distance <= range) {
                 gourmetDistanceResponseDtoList.add(GourmetDistanceResponseDto.builder()
                         .distance(distance)
@@ -49,7 +52,7 @@ public class GourmetRepositoryImpl implements GourmetRepositoryCustom {
      * @param unit  거리 표출단위
      * @return
      */
-    private static double distance(String lat1S, String lon1S, String lat2S, String lon2S, String unit) {
+    private static double distance(String lat1S, String lon1S, String lat2S, String lon2S) {
 
         double lat1 = Double.parseDouble(lat1S);
         double lon1 = Double.parseDouble(lon1S);
@@ -63,11 +66,7 @@ public class GourmetRepositoryImpl implements GourmetRepositoryCustom {
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
 
-        if (unit == "kilometer") {
-            dist = dist * 1.609344;
-        } else if (unit == "meter") {
-            dist = dist * 1609.344;
-        }
+        dist = dist * 1.609344;
 
         return (dist);
     }
@@ -82,4 +81,5 @@ public class GourmetRepositoryImpl implements GourmetRepositoryCustom {
     private static double rad2deg(double rad) {
         return (rad * 180 / Math.PI);
     }
+
 }
