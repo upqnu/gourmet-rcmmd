@@ -28,14 +28,28 @@ public class GourmetInitService implements CommandLineRunner {
         Gourmet gourmet1 = Gourmet.builder()
                 .name("음식점 1")
                 .category("카테고리1")
-                .point(Point.of("hello1", "hello2"))
+                .point(Point.of("35.154455001236144", "129.01519285571078"))
                 .address(Address.of("도로명1", "16", "16639"))
                 .isOpen("open").build();
 
         Gourmet gourmet2 = Gourmet.builder()
                 .name("음식점 2")
                 .category("카테고리2")
-                .point(Point.of("hello2", "hello2"))
+                .point(Point.of("35.15337357049077", "129.0088209655938"))
+                .address(Address.of("도로명2", "16", "16639"))
+                .isOpen("open").build();
+
+        Gourmet gourmet3 = Gourmet.builder()
+                .name("음식점 3")
+                .category("카테고리2")
+                .point(Point.of("35.153551198229685", "129.01386174111775"))
+                .address(Address.of("도로명2", "16", "16639"))
+                .isOpen("open").build();
+
+        Gourmet gourmet4 = Gourmet.builder()
+                .name("음식점 4")
+                .category("카테고리2")
+                .point(Point.of("35.128089387306545", "129.01245566451655"))
                 .address(Address.of("도로명2", "16", "16639"))
                 .isOpen("open").build();
 
@@ -65,7 +79,7 @@ public class GourmetInitService implements CommandLineRunner {
                 .content("노맛.. 가지마세요.")
                 .build();
 
-        gourmetRepository.saveAll(List.of(gourmet1, gourmet2));
+        gourmetRepository.saveAll(List.of(gourmet1, gourmet2, gourmet3, gourmet4));
         clientRepository.saveAll(List.of(client1, client2));
         ratingRepository.saveAll(List.of(rating1, rating2));
     }

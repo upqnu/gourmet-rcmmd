@@ -26,10 +26,9 @@ public class GourmetRepositoryImpl implements GourmetRepositoryCustom {
                 .from(gourmet)
                 .fetch();
 
-        gourmetList = gourmetList.stream().filter(g -> range >= latLongToKm(g.getPoint().getLatitude(), g.getPoint().getLatitude(), lat, lon)).collect(Collectors.toList());
         List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = new ArrayList<>();
         for (Gourmet gourmet : gourmetList) {
-            Double distance = latLongToKm(gourmet.getPoint().getLatitude(), gourmet.getPoint().getLatitude(), lat, lon);
+            Double distance = distance(gourmet.getPoint().getLatitude(), gourmet.getPoint().getLongitude(), lat, lon, "kilometer");
             if (distance <= range) {
                 gourmetDistanceResponseDtoList.add(GourmetDistanceResponseDto.builder()
                         .distance(distance)
@@ -40,26 +39,47 @@ public class GourmetRepositoryImpl implements GourmetRepositoryCustom {
         return gourmetDistanceResponseDtoList;
     }
 
-    private static double latLongToKm(String slat1, String slon1, String slat2, String slon2) {
-        // double[] point1 = { 127.07596008849987, 37.2040 };
-        // double[] point2 = { 127.08726833239848, 37.19497222488765 };
+    /**
+     * 두 지점간의 거리 계산
+     *
+     * @param lat1S 지점 1 위도
+     * @param lon1S 지점 1 경도
+     * @param lat2S 지점 2 위도
+     * @param lon2S 지점 2 경도
+     * @param unit  거리 표출단위
+     * @return
+     */
+    private static double distance(String lat1S, String lon1S, String lat2S, String lon2S, String unit) {
 
-        double lat1 = Double.parseDouble(slat1);
-        double lon1 = Double.parseDouble(slon1);
-        double lat2 = Double.parseDouble(slat2);
-        double lon2 = Double.parseDouble(slon2);
+        double lat1 = Double.parseDouble(lat1S);
+        double lon1 = Double.parseDouble(lon1S);
+        double lat2 = Double.parseDouble(lat2S);
+        double lon2 = Double.parseDouble(lon2S);
 
-        double R = 6371; // km
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
 
-        lat1 = Math.toRadians(lat1);
-        lat2 = Math.toRadians(lat2);
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
 
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        if (unit == "kilometer") {
+            dist = dist * 1.609344;
+        } else if (unit == "meter") {
+            dist = dist * 1609.344;
+        }
 
-        return R * c;
+        return (dist);
+    }
+
+
+    // This function converts decimal degrees to radians
+    private static double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    // This function converts radians to decimal degrees
+    private static double rad2deg(double rad) {
+        return (rad * 180 / Math.PI);
     }
 }

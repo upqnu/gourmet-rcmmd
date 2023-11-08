@@ -1,6 +1,7 @@
 package com.example.skeleton.domain.gourmet.controller;
 
 import com.example.skeleton.domain.gourmet.dto.GourmetDetailResponseDto;
+import com.example.skeleton.domain.gourmet.dto.GourmetDistanceResponseDto;
 import com.example.skeleton.domain.gourmet.mapper.GourmetMapper;
 import com.example.skeleton.domain.gourmet.service.GourmetService;
 import com.example.skeleton.domain.rating.entity.Rating;
@@ -42,8 +43,8 @@ public class GourmetController {
             @RequestParam Double range,
             @RequestParam(required = false) String sort // default 값 거리순(location) / 평점순(rating)
     ) {
-        gourmetService.getGourmetDtoByLocation(lat, lon, range, sort);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = gourmetService.getGourmetDtoByLocation(lat, lon, range, sort);
+        return ResponseEntity.status(HttpStatus.OK).body(gourmetDistanceResponseDtoList);
     }
 
 }
