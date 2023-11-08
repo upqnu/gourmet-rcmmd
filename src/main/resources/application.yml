@@ -1,12 +1,21 @@
 spring:
   jpa:
-#    show-sql: true
+    show-sql: true
+    generate-ddl: false   # true, false
+    hibernate:
+      ddl-auto: none   # create(처음생성시,테스트), create-drop, update(db가 확정되었을 때,수정단계일때), validate, none(최종)
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(onSmVzRTcpRirkvueJhCHRUdRlmZwP9GPUmVCYOcEnDhaBg03Wq8Aui0RL1Bvg96o0ai9oH45vGlbpsa2FHbfg==)
+    username: ENC(lKjrK1KILkq5uOEKlrAOxhPMawbHsfiw)
+    password: ENC(xSCSOh87dTdWnhfweEleJmFmhDit5Tjt)
 
   cache: # spring data cache 설정
     type: redis
     redis: # redis의 기본값은 localhost:6379입니다. redis-server를 설치해야 사용할 수 있습니다.
-      host: ${REDIS_HOST_URL}
-      port: ${REDIS_PORT}
+      host: ENC(FPIq0n4UquHJmQdh0efGn+Fac4xqj1x8HAb/9iSbI3E=)
+      port: ENC(b+XJjN0EpX2FuEjGW2loEQ==)
       cache-null-values: true # null 캐싱 여부
 
   h2:
@@ -36,3 +45,10 @@ springdoc:
     disable-swagger-default-url: true
     display-request-duration: true
     operations-sorter: alpha
+
+jasypt: # Jasypt
+  encryptor:
+    bean: jasyptStringEncryptor
+    algorithm: PBEWithMD5AndDES
+    pool-size: 2
+    string-output-type: base64
