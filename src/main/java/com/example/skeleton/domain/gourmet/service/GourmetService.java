@@ -56,10 +56,9 @@ public class GourmetService {
         int start = size * page - size;
         int end = Math.min(size * (page), totalElements);
 
-        gourmetDistancePageResponseDto.setGouretList(new ArrayList<>());
+        gourmetDistancePageResponseDto.setGourmetList(new ArrayList<>());
         for (int i = start; i < end ; i++) {
-            System.out.println(i);
-            gourmetDistancePageResponseDto.getGouretList().add(gourmetDistanceResponseDtoList.get(i));
+            gourmetDistancePageResponseDto.getGourmetList().add(gourmetDistanceResponseDtoList.get(i));
         }
 
         return gourmetDistancePageResponseDto;

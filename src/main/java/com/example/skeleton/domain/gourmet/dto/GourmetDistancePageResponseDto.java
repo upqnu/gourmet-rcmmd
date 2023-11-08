@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class GourmetDistancePageResponseDto {
-    public List<GourmetDistanceResponseDto> gouretList;
+    public List<GourmetDistanceResponseDto> gourmetList;
     public PageInfo pageInfo;
 }
