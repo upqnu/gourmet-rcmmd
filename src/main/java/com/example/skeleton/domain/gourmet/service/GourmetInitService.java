@@ -22,7 +22,7 @@ public class GourmetInitService implements CommandLineRunner {
     private final RatingRepository ratingRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
 
         // == 음식점 == //
         Gourmet gourmet1 = Gourmet.builder()
