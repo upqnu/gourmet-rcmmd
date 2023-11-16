@@ -25,7 +25,7 @@ import java.util.*;
 @Component
 public class JwtTokenProvider implements InitializingBean {
 
-    // 사용자 권한 정보
+    // 사용자 권한 정보 (현재 사용자 권한은 세분화되어 있지 않음.)
     public static final String AUTH = "auth";
 
     // JWT 서명용 비밀키
@@ -83,7 +83,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .setSubject(client.getClientId())
                 .setExpiration(expiry)
                 .setIssuedAt(new Date())
-                // Claim 지정(clientId 저장)
+                // Claim 지정(clientId 저장/ 사용자 권한을 다양화할 경우, 사용자 권한을 claim에 포함시켜야 함.)
                 .addClaims(Map.of("clientId", client.getClientId()))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
@@ -121,6 +121,7 @@ public class JwtTokenProvider implements InitializingBean {
         Claims claims = getClaims(token);
 
         if (claims != null) {
+            // 사용자 권한이 세분화되면 반환 유형을 String[].class로 수정 필요
             String authValue = claims.get(AUTH, String.class);
 
             if (authValue != null && !authValue.isEmpty()) {
