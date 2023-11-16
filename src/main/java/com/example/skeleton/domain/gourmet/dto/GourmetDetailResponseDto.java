@@ -12,7 +12,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GourmetResponseDto {
+public class GourmetDetailResponseDto {
+
     private Long id;
     private String gourmetCode;
     private String name;
@@ -21,4 +22,6 @@ public class GourmetResponseDto {
     private Address address;
     private String isOpen;
     private Double rating;
+    private List<RatingInfo> ratingList;
+
 }
