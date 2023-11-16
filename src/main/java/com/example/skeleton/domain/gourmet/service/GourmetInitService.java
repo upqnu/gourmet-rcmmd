@@ -22,20 +22,20 @@ public class GourmetInitService implements CommandLineRunner {
     private final RatingRepository ratingRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
 
         // == 음식점 == //
         Gourmet gourmet1 = Gourmet.builder()
                 .name("음식점 1")
                 .category("카테고리1")
-                .point(Point.of("hello1", "hello2"))
+                .point(Point.of(0.0, 0.0))
                 .address(Address.of("도로명1", "16", "16639"))
                 .isOpen("open").build();
 
         Gourmet gourmet2 = Gourmet.builder()
                 .name("음식점 2")
                 .category("카테고리2")
-                .point(Point.of("hello2", "hello2"))
+                .point(Point.of(0.0, 0.0))
                 .address(Address.of("도로명2", "16", "16639"))
                 .isOpen("open").build();
 
@@ -65,8 +65,12 @@ public class GourmetInitService implements CommandLineRunner {
                 .content("노맛.. 가지마세요.")
                 .build();
 
-        gourmetRepository.saveAll(List.of(gourmet1, gourmet2));
-        clientRepository.saveAll(List.of(client1, client2));
-        ratingRepository.saveAll(List.of(rating1, rating2));
+        boolean isDataCheck = clientRepository.existsByClientId(client1.getClientId());
+
+        if(!isDataCheck) {
+            gourmetRepository.saveAll(List.of(gourmet1, gourmet2));
+            clientRepository.saveAll(List.of(client1, client2));
+            ratingRepository.saveAll(List.of(rating1, rating2));
+        }
     }
 }
