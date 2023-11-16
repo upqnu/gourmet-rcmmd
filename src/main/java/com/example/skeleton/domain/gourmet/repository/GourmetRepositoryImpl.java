@@ -47,17 +47,14 @@ public class GourmetRepositoryImpl implements GourmetRepositoryCustom {
     /**
      * 두 지점간의 거리 계산
      *
-     * @param lat1S 지점 1 위도
-     * @param lon1S 지점 1 경도
+     * @param lat1 지점 1 위도
+     * @param lon1 지점 1 경도
      * @param lat2S 지점 2 위도
      * @param lon2S 지점 2 경도
-     * @param unit  거리 표출단위
      * @return
      */
-    private static double distance(String lat1S, String lon1S, String lat2S, String lon2S) {
+    private static double distance(Double lat1, Double lon1, String lat2S, String lon2S) {
 
-        double lat1 = Double.parseDouble(lat1S);
-        double lon1 = Double.parseDouble(lon1S);
         double lat2 = Double.parseDouble(lat2S);
         double lon2 = Double.parseDouble(lon2S);
 
