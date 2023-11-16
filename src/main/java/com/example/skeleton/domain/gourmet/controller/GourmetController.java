@@ -1,6 +1,8 @@
 package com.example.skeleton.domain.gourmet.controller;
 
-import com.example.skeleton.domain.gourmet.dto.GourmetResponseDto;
+import com.example.skeleton.domain.gourmet.dto.GourmetDetailResponseDto;
+import com.example.skeleton.domain.gourmet.dto.GourmetDistancePageResponseDto;
+import com.example.skeleton.domain.gourmet.dto.GourmetDistanceResponseDto;
 import com.example.skeleton.domain.gourmet.mapper.GourmetMapper;
 import com.example.skeleton.domain.gourmet.service.GourmetService;
 import com.example.skeleton.domain.rating.entity.Rating;
@@ -9,11 +11,9 @@ import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -29,13 +29,28 @@ public class GourmetController {
             @Positive @PathVariable Long gourmetId) {
 
         // 맛집 상세보기
-        GourmetResponseDto gourmetResponseDto = gourmetMapper.gourmetToGourmetResponseDto(gourmetService.getGourmet(gourmetId));
+        GourmetDetailResponseDto gourmetDetailResponseDto = gourmetMapper.gourmetToGourmetDetailResponseDto(gourmetService.getGourmet(gourmetId));
 
         // 총 평점, 평점 목록
         List<Rating> ratings = gourmetService.getRatingList(gourmetId);
-        gourmetResponseDto.setRating(ratings.stream().mapToDouble(Rating::getScore).sum() / ratings.size());
-        gourmetResponseDto.setRatingList(ratingMapper.ratingsToRatingInfos(ratings));
-        return ResponseEntity.status(HttpStatus.OK).body(gourmetResponseDto);
+        gourmetDetailResponseDto.setRating(ratings.stream().mapToDouble(Rating::getScore).sum() / ratings.size());
+        gourmetDetailResponseDto.setRatingList(ratingMapper.ratingsToRatingInfos(ratings));
+        return ResponseEntity.status(HttpStatus.OK).body(gourmetDetailResponseDto);
+    }
+
+    @GetMapping
+    public ResponseEntity getGourmet( // todo : 필수 값 입력 안되면 에러 핸들링하기
+                  @RequestParam(defaultValue = "1") int page,
+                  @RequestParam(defaultValue = "20") int size,
+                  @RequestParam(defaultValue = "") String search,
+                  @RequestParam String lat,
+                  @RequestParam String lon,
+                  @RequestParam Double range,
+                  @RequestParam(required = false) String sort // default 값 거리순(distance) / 평점순(rating)
+    ) {
+        List<GourmetDistanceResponseDto> gourmetDistanceResponseDtoList = gourmetService.getGourmetDtoByLocation(lat, lon, range, sort, search);
+        GourmetDistancePageResponseDto gourmetDistancePageResponseDto = gourmetService.getGourmetDistancePageResponseDto(page, size, gourmetDistanceResponseDtoList);
+        return ResponseEntity.status(HttpStatus.OK).body(gourmetDistancePageResponseDto);
     }
 
 }

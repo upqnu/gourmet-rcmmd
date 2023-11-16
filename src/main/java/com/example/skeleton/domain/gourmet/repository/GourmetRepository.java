@@ -9,9 +9,8 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.skeleton.domain.gourmet.entity.Gourmet;
 
-public interface GourmetRepository extends JpaRepository<Gourmet, Long> {
+public interface GourmetRepository extends JpaRepository<Gourmet, Long>, GourmetRepositoryCustom {
         boolean existsByGourmetCode(String gourmetCode);
-
         Optional<Gourmet> findByGourmetCode(String gourmetCode);
 
         @Query("SELECT g FROM Gourmet g " +
