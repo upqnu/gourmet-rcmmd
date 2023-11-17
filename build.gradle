@@ -85,6 +85,9 @@ dependencies {
 
     // Jasypt
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+
+    // Awaitility
+    implementation 'org.awaitility:awaitility:4.2.0'
 }
 
 tasks.named('test') {
