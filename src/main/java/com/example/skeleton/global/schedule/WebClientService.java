@@ -19,6 +19,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -70,7 +71,8 @@ public class WebClientService {
             JSONObject jsonRow = (JSONObject) jsonResponse.get(1);
             JSONArray jsonRowArray = (JSONArray) jsonRow.get("row");
 
-            result = jsonRowArray.stream().map(row -> makeGourmetEntity((JSONObject) row))
+            result = IntStream.range(0, jsonRowArray.size())
+                    .mapToObj(i -> makeGourmetEntity((JSONObject) jsonRowArray.get(i)))
                     .toList();
 
         } catch (Exception e) {
