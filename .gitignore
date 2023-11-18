@@ -42,7 +42,3 @@ src/main/generated/
 
 ### enigma23 ###
 enigma23.txt
-
-## Redis ##
-src/main/resources/application.yml
-src/main/java/com/example/skeleton/global/config/redis/RedisConfig.java
