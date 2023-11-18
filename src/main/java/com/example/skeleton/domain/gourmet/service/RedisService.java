@@ -14,16 +14,24 @@ public class RedisService {
     private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper objectMapper;
 
-    public <T> T getRedisValue(String key, Class<T> classType) throws JsonProcessingException {
+    public <T> T getRedisValue(String key, Class<T> classType) {
         String redisValue = (String) redisTemplate.opsForValue().get(key);
         if(ObjectUtils.isEmpty(redisValue)) {
             return null;
         } else {
-            return objectMapper.readValue(redisValue, classType);
+            try {
+                return objectMapper.readValue(redisValue, classType);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
-    public void putRedis(String key, Object classType) throws JsonProcessingException {
-        redisTemplate.opsForValue().set(key, objectMapper.writeValueAsString(classType));
+    public void putRedis(String key, Object classType){
+        try {
+            redisTemplate.opsForValue().set(key, objectMapper.writeValueAsString(classType));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -43,7 +43,7 @@ public class GourmetController {
             @Positive @PathVariable Long gourmetId) {
 
         // 맛집 상세보기
-        GourmetDetailResponseDto gourmetDetailResponseDto = gourmetMapper.gourmetToGourmetDetailResponseDto(gourmetService.getGourmet(gourmetId));
+        GourmetDetailResponseDto gourmetDetailResponseDto = gourmetMapper.gourmetToGourmetDetailResponseDto(gourmetService.getGourmetByRedisTemplate(gourmetId));
 
         // 총 평점, 평점 목록
         List<Rating> ratings = gourmetService.getRatingList(gourmetId);

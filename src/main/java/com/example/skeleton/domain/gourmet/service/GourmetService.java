@@ -7,6 +7,7 @@ import com.example.skeleton.domain.gourmet.repository.GourmetRepository;
 import com.example.skeleton.domain.rating.entity.Rating;
 import com.example.skeleton.domain.rating.repository.RatingRepository;
 import com.example.skeleton.global.model.PageInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -32,16 +33,18 @@ public class GourmetService {
     private final GourmetRepository gourmetRepository;
     private final RatingRepository ratingRepository;
     private final RedisService redisService;
-    private final RedisTemplate<String, String> redisTemplate;
 
     public Gourmet getGourmet(Long id) {
         return verifiedGourmet(id);
     }
 
-    public Gourmet getGourmetByRedisTemplate(Long id) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(id.toString(), verifiedGourmet(id).toString());
-        return verifiedGourmet(id);
+    public Gourmet getGourmetByRedisTemplate(Long id){
+        Gourmet gourmet = redisService.getRedisValue("gourmet::" + id.toString(), Gourmet.class);
+        if (gourmet == null) {
+            gourmet = verifiedGourmet(id);
+            redisService.putRedis("gourmet::" + id.toString(), gourmet);
+        }
+        return gourmet;
     }
 
     public List<Rating> getRatingList(Long id) {
