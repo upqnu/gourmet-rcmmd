@@ -24,8 +24,7 @@ class RedisServiceTest {
     GourmetService gourmetService;
 
     @Test
-    @DisplayName("상세 정보 조회시 한 번 이상 조회했다면 cache에 저장되어 있고, 아니면 저장되어 있지 않음")
-    void getGourmet() throws JsonProcessingException {
+    void getGourmet(){
         // given
         Gourmet gourmet = Gourmet.builder()
                 .name("음식점 1")
