@@ -38,6 +38,20 @@ public class GourmetController {
         return ResponseEntity.status(HttpStatus.OK).body(gourmetDetailResponseDto);
     }
 
+    @GetMapping("/{gourmetId}/redis-template")
+    public ResponseEntity getGourmetByRedisTemplate(
+            @Positive @PathVariable Long gourmetId) {
+
+        // 맛집 상세보기
+        GourmetDetailResponseDto gourmetDetailResponseDto = gourmetMapper.gourmetToGourmetDetailResponseDto(gourmetService.getGourmetByRedisTemplate(gourmetId));
+
+        // 총 평점, 평점 목록
+        List<Rating> ratings = gourmetService.getRatingList(gourmetId);
+        gourmetDetailResponseDto.setRating(ratings.stream().mapToDouble(Rating::getScore).sum() / ratings.size());
+        gourmetDetailResponseDto.setRatingList(ratingMapper.ratingsToRatingInfos(ratings));
+        return ResponseEntity.status(HttpStatus.OK).body(gourmetDetailResponseDto);
+    }
+
     @GetMapping
     public ResponseEntity getGourmet( // todo : 필수 값 입력 안되면 에러 핸들링하기
                   @RequestParam(defaultValue = "1") int page,

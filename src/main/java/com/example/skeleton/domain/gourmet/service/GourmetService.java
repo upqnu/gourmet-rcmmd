@@ -7,9 +7,13 @@ import com.example.skeleton.domain.gourmet.repository.GourmetRepository;
 import com.example.skeleton.domain.rating.entity.Rating;
 import com.example.skeleton.domain.rating.repository.RatingRepository;
 import com.example.skeleton.global.model.PageInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +32,19 @@ public class GourmetService {
 
     private final GourmetRepository gourmetRepository;
     private final RatingRepository ratingRepository;
+    private final RedisService redisService;
 
     public Gourmet getGourmet(Long id) {
         return verifiedGourmet(id);
+    }
+
+    public Gourmet getGourmetByRedisTemplate(Long id){
+        Gourmet gourmet = redisService.getRedisValue("gourmet::" + id.toString(), Gourmet.class);
+        if (gourmet == null) {
+            gourmet = verifiedGourmet(id);
+            redisService.putRedis("gourmet::" + id.toString(), gourmet);
+        }
+        return gourmet;
     }
 
     public List<Rating> getRatingList(Long id) {
@@ -64,7 +78,7 @@ public class GourmetService {
         return gourmetDistancePageResponseDto;
     }
 
-    private Gourmet verifiedGourmet(Long id) {
+    public Gourmet verifiedGourmet(Long id) {
         return gourmetRepository.findById(id).orElseThrow(() -> new RuntimeException("음식점 정보가 없습니다.")); // todo : Error code 분리하기
     }
 }

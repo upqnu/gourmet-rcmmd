@@ -28,7 +28,7 @@ public class GourmetInitService implements CommandLineRunner {
         Gourmet gourmet1 = Gourmet.builder()
                 .name("음식점 1")
                 .category("카테고리1")
-                .point(Point.of("35.154455001236144", "129.01519285571078"))
+                .point(Point.of(35.154455001236144, 129.01519285571078))
                 .address(Address.of("도로명1", "16", "16639"))
                 .isOpen("open").build();
 
@@ -37,7 +37,7 @@ public class GourmetInitService implements CommandLineRunner {
         Gourmet gourmet2 = Gourmet.builder()
                 .name("음식점 2")
                 .category("카테고리2")
-                .point(Point.of("35.15337357049077", "129.0088209655938"))
+                .point(Point.of(35.15337357049077, 129.0088209655938))
                 .address(Address.of("도로명2", "16", "16639"))
                 .isOpen("open").build();
         gourmet2.updateRating(5.0);
@@ -45,7 +45,7 @@ public class GourmetInitService implements CommandLineRunner {
         Gourmet gourmet3 = Gourmet.builder()
                 .name("음식점 3")
                 .category("카테고리2")
-                .point(Point.of("35.153551198229685", "129.01386174111775"))
+                .point(Point.of(35.153551198229685, 129.01386174111775))
                 .address(Address.of("도로명2", "16", "16639"))
                 .isOpen("open").build();
         gourmet3.updateRating(4);
@@ -53,7 +53,7 @@ public class GourmetInitService implements CommandLineRunner {
         Gourmet gourmet4 = Gourmet.builder()
                 .name("음식점 4")
                 .category("카테고리2")
-                .point(Point.of("35.128089387306545", "129.01245566451655"))
+                .point(Point.of(35.128089387306545, 129.01245566451655))
                 .address(Address.of("도로명2", "16", "16639"))
                 .isOpen("open").build();
         gourmet4.updateRating(3);
