@@ -1,75 +1,77 @@
-# 지리기반 맛집 추천 웹 서비스, 구루메
-## Table of Contents
-- [개요](#개요)
-- [Skills](#skill)
-- [Installation](#Installation)
-- [Running Tests](#running-tests)
-- [프로젝트 진행 및 이슈 관리](#프로젝트-진행-및-이슈-관리)
-- [ERD](#ERD)
-- [TIL 및 회고](#til-및-회고)
-- [Authors](#authors)
+본 "MINE" 브랜치는 팀 프로젝트 "지리 기반 맛집 추천 웹 서비스, 구루메"의 GitHub repository를 본인의 GitHub으로 fork한 후, 다시 새롭게 분기한 브랜치이다.
 
-## 개요
+분기한 목적은 (1) 팀 프로젝트에서 본인이 구현한 기능의 포트폴리오 (2) 추후 본인이 의도한대로 코드 리팩토링 또는 기능 추가
+
+* (팀 프로젝트 확인 : https://github.com/Team-Enigma23/location-based-gourmet-recommendation-project)
+
+---
+
+
+# :pushpin: 지리 기반 맛집 추천 웹 서비스, 구루메
+> **지리 기반 맛집 추천 웹 서비스, 구루메!**
+>
+> 사용자 위치에 기반한 맛집 및 메뉴를 추천해 더 나은 다양한 음식 경험을 제공하는 서비스
+  
+## <포트폴리오 순서>
+1. [제작기간 및 참여인원](#1제작기간-및-참여인원)
+2. [개요](#2개요)
+3. [사용기술](#3사용기술)
+4. [ERD 설계](#4erd-설계)
+5. [본인 구현 기능](#5본인-구현-기능)
+6. [트러블 슈팅 & TIL](#6트러블-슈팅--til)
+  
+- [Git commit 메시지 컨벤션](#git-commit-메시지-컨벤션)
+- [본인 구현 API Reference](#본인-구현-api-reference)
+  
+## 1.제작기간 및 참여인원
+- 제작기간 : 2023년 11월 1일 ~ 11월 7일
+- 팀 프로젝트 (총 4명 / 모두 Java, Spring 기반 백엔드 개발자)
+  
+## 2.개요
 본 서비스는 사용자 위치에 맞는 맛집 및 메뉴를 추천해 더 나은 다양한 음식 경험을 제공하고, 음식을 좋아하는 사람들 간의 소통과 공유를 촉진하려 합니다.<br>
 `경기도 공공데이터 API`를 활용해, 지역 음식점 목록을 자동으로 업데이트 하고 이를 활용합니다.<br>
-
-## Skill
-언어 및 프레임워크: ![Static Badge](https://img.shields.io/badge/Java-17-Green) ![Static Badge](https://img.shields.io/badge/Spring_boot-REST-Green)<br/>
-데이터베이스 및 테스트: ![Static Badge](https://img.shields.io/badge/h2-2.1.214-blue) ![Static Badge](https://img.shields.io/badge/JUnit-Green) <br/>
-배포 : ![Static Badge](https://img.shields.io/badge/Gradle-039BC6) <br/>
-ETC: ![Static Badge](https://img.shields.io/badge/SMTP-039BC6)
-
-
-## Installation
-Install MOA project with gradle
-```bash
-./gradlew bootjar
-./gradlew bootrun
-```
-
-## Running Tests
-To run tests, run the following command
-```bash
-  ./gradlew test
-```
-> ![Static Badge](https://img.shields.io/badge/Test_Passed-8/10-yellow)<br/>
-> ![coverage](src/main/resources/static/img/test.png)
-
-## 프로젝트 진행 및 이슈 관리
-> [![Notion](https://img.shields.io/badge/Github_project_-CLICK🖱-%23000000.svg?style=for-the-badge&logo=Github&logoColor=white)](https://github.com/orgs/Team-Enigma23/projects/3/views/1)<br>
-> ![img.png](src/main/resources/static/img/project.png)
-
-## ERD
+  
+## 3.사용기술
+- 언어 및 프레임워크 : ![Static Badge](https://img.shields.io/badge/Java-17-F58232) ![Static Badge](https://img.shields.io/badge/Spring_boot-3.0.12-6CB52C)<br/>
+- 데이터베이스 : ![Static Badge](https://img.shields.io/badge/h2-2.1.214-1021FF) ![Static Badge](https://img.shields.io/badge/Spring_Data_JPA-3.0.11-80E96E)<br/>
+- 배포 : ![Static Badge](https://img.shields.io/badge/Gradle-8.3-02303A) <br/>
+- ETC: ![Static Badge](https://img.shields.io/badge/SMTP-039BC6)
+  
+## 4.ERD 설계
 >![coverage](src/main/resources/static/img/ERD.png) <br/>
 > - 유저는 위치 정보와 맛집 추천 여부 컬럼을 가진다.
 >   - 위치 정보를 통해 유저 근처의 맛집을 추천한다.
 >   - 맛집 추천 여부를 받아 원하지 않는다면 추천을 하지 않는다.
 > - 평점 추천 서비스를 제공한다.
 
-## TIL 및 회고
-- [Embedded 객체](https://ionian-basement-e0c.notion.site/Embedded-7918754e04dd4c4ebcb7636a7f7b4d2b)
-- [빌더 패턴, 잘 알고 쓰자!](https://grateful-pharaoh-d2a.notion.site/6d2926a3721543dcb569d1e6e39d9553)
-- [@NoArgsConstructor, @AllArgsConstructor ; 그냥 쓰면 안 되는 거였냐? …](https://grateful-pharaoh-d2a.notion.site/NoArgsConstructor-AllArgsConstructor-5e1fa5e4006d47d5b22cac55f8186ca6)
-- [JPA auditing ; 말은 거창해도 설정은 쉽다](https://grateful-pharaoh-d2a.notion.site/JPA-auditing-c113279b9e104ceabb59cf36bdfc50cc)
-- [JPA dirty checking 그리고 @Transactional](https://grateful-pharaoh-d2a.notion.site/JPA-dirty-checking-Transactional-a58211005a55444487e7d85226acb428)
-- [대삽질끝에 알게 된 Spring Security의 Filter 순서의 중요성](https://grateful-pharaoh-d2a.notion.site/Spring-Security-Filter-4c88664e1b5e4cd987e072ada0e25395)
+## 5.본인 구현 기능
 
-## Authors
-<div align="center">
-    <table>
-        <tr>
-            <th>이유진</th>
-            <th>윤준영</th>
-            <th>김가영</th>
-            <th>김성은</th>
-            <th>김재민</th>
-        </tr>
-        <tr>
-            <td><a href="https://github.com/U-jinLee">@U-jinLee</a></td>
-            <td><a href="https://github.com/upqnu">@upqnu</a></td>
-            <td><a href="https://github.com/gabang2">@gabang2</a></td>
-            <td><a href="https://github.com/chickencoc">@chickencoc</a></td>
-            <td><a href="https://github.com/JaeMin1130">@JaeMin1130</a></td>
-        </tr>
-    </table>
-</div>
+## 6.트러블 슈팅 & TIL
+
+1. JPA dirty checking 그리고 @Transactional (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/JPA%20dirty%20checking%20%EA%B7%B8%EB%A6%AC%EA%B3%A0%20@Transactional">클릭 & detail 확인</a>)
+  
+2. 대삽질끝에 알게 된 Spring Security의 Filter 순서의 중요성 (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/%EB%8C%80%EC%82%BD%EC%A7%88%EB%81%9D%EC%97%90%20%EC%95%8C%EA%B2%8C%20%EB%90%9C%20Spring%20Security%EC%9D%98%20Filter%20%EC%88%9C%EC%84%9C%EC%9D%98%20%EC%A4%91%EC%9A%94%EC%84%B1">클릭 & detail 확인</a>)
+  
+3. JPA auditing ; 말은 거창해도 설정은 쉽다 (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/JPA%20auditing%20;%20%EB%A7%90%EC%9D%80%20%EA%B1%B0%EC%B0%BD%ED%95%B4%EB%8F%84%20%EC%84%A4%EC%A0%95%EC%9D%80%20%EC%89%BD%EB%8B%A4">클릭 & detail 확인</a>)
+  
+4. 리프레시 토큰에 대한 단위 테스트 성공 (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/%EB%A6%AC%ED%94%84%EB%A0%88%EC%8B%9C%20%ED%86%A0%ED%81%B0%EC%97%90%20%EB%8C%80%ED%95%9C%20%EB%8B%A8%EC%9C%84%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%84%B1%EA%B3%B5">클릭 & detail 확인</a>)
+  
+---
+  
+## Git commit 메시지 컨벤션
+
+| 표시         | 설명               | 
+|:-----------|:-----------------|
+| `Feat`     | 새로운 기능을 추가       |
+| `Refactor` | 프로덕션 코드 리팩토링                 |
+| `Fix`      | 버그 수정            |
+| `Comment`  | 필요한 주석 추가 및 변경         |
+| `Docs`     | 문서 수정, 생성에 사용         |
+| `Test`     | 테스트 코드, 리펙토링 테스트 코드 추가, Production Code(실제로 사용하는 코드) 변경 없음            |
+| `Chore`    | 빌드 업무 수정, 패키지 매니저 수정, 패키지 관리자 구성 등 업데이트, Production Code 변경 없음        |
+| `Rename`   | 파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우        |
+| `Remove`   | 파일을 삭제하는 작업만 수행한 경우        |
+| `Style`    | 코드 포맷 변경, 세미 콜론 누락, 코드 수정이 없는 경우      |
+
+
+## 본인 구현 API Reference
