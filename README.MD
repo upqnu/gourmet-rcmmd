@@ -98,3 +98,54 @@
 
 ## 본인 구현 API Reference
 
+<details>
+<summary>로그인 & 액세스 토큰 발급 - click</summary>
+
+#### Request
+```javascript
+  POST /api/clients/sign-in
+```
+```http
+Content-Type: application/json
+
+{
+    "clientId": "tester1",
+    "password": "asdf1234"
+}
+```
+
+#### Response
+```http
+    HTTP/1.1 200
+    Content-Type: application/json
+
+{
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiZXhwIjoxNzAwMzI5NTI4LCJpYXQiOjE3MDAzMjc3MjgsImF1dGhvcml0aWVzIjoiUk9MRV9NRU1CRVIiLCJuYW1lIjoidGVzdGVyMSJ9.gBERUQJ9zGkJcWdxehqw9MXCY7hRTR98CeXJZpsgvRU"
+}
+```
+</details>
+<details>
+<summary>리프레시 토큰 발급 & 액세스 토큰 갱신 - click </summary>
+
+#### Request
+```javascript
+  POST /api/token
+```
+```http
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiZXhwIjoxNzAwMzExNzM4LCJpYXQiOjE3MDAzMDk5MzgsIm5hbWUiOiJ0ZXN0ZXIxIiwiYXV0aG9yaXRpZXMiOiJST0xFX01FTUJFUiJ9.XRxWNeFYMBq9_CDO2qVm_zRpC4-Uem2ytpSBt0GJVsM"
+}
+```
+
+#### Response
+```http
+    HTTP/1.1 200
+    Content-Type: application/json
+
+{
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIxIiwiZXhwIjoxNzAwMzExNzk1LCJpYXQiOjE3MDAzMDk5OTUsIm5hbWUiOiJ0ZXN0ZXIxIiwiYXV0aG9yaXRpZXMiOiJST0xFX01FTUJFUiJ9.olSJWEcCp0OQp8PAQmfoKFIYJeLIwfWv0Ox8F4LEis8"
+}
+```
+</details>
