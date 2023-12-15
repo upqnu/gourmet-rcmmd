@@ -69,14 +69,61 @@
 </details>
 
 ## 6.트러블 슈팅 & TIL
+[트러블 슈팅]
+>
+> 1. JPA dirty checking 그리고 @Transactional (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/JPA%20dirty%20checking%20%EA%B7%B8%EB%A6%AC%EA%B3%A0%20@Transactional">클릭 & detail 확인</a>)
+> 
+> 2. 대삽질끝에 알게 된 Spring Security의 Filter 순서의 중요성 (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/%EB%8C%80%EC%82%BD%EC%A7%88%EB%81%9D%EC%97%90%20%EC%95%8C%EA%B2%8C%20%EB%90%9C%20Spring%20Security%EC%9D%98%20Filter%20%EC%88%9C%EC%84%9C%EC%9D%98%20%EC%A4%91%EC%9A%94%EC%84%B1">클릭 & detail 확인</a>)
+> 
+> 3. JPA auditing ; 말은 거창해도 설정은 쉽다 (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/JPA%20auditing%20;%20%EB%A7%90%EC%9D%80%20%EA%B1%B0%EC%B0%BD%ED%95%B4%EB%8F%84%20%EC%84%A4%EC%A0%95%EC%9D%80%20%EC%89%BD%EB%8B%A4">클릭 & detail 확인</a>)
+> 
+> 4. 리프레시 토큰에 대한 단위 테스트 성공 (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/%EB%A6%AC%ED%94%84%EB%A0%88%EC%8B%9C%20%ED%86%A0%ED%81%B0%EC%97%90%20%EB%8C%80%ED%95%9C%20%EB%8B%A8%EC%9C%84%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%84%B1%EA%B3%B5">클릭 & detail 확인</a>)
+>
+  
+[TIL]
+<details>
+<summary>JWT를 통한 사용자 인증을 구현할 때 의외로 나를 가장 힘들게 했던 것은 SecurityConfig 설정이었다. 이를 수정하는 과정에서 Security filter의 순서가 조금만 잘못되어도 사용자 인증을 활용한 기능 구현에 문제가 생길 수 있음을 깨달은 계기가 되었다.</summary>
 
-1. JPA dirty checking 그리고 @Transactional (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/JPA%20dirty%20checking%20%EA%B7%B8%EB%A6%AC%EA%B3%A0%20@Transactional">클릭 & detail 확인</a>)
+1. JWT 통한 사용자 인증을 위한 코드 작성 중, `OncePerRequestFilter`을 상속한 `JwtTokenAuthenticationFilter`클래스를 작성 후 postman에서 테스트 진행 결과,  `java.lang.IllegalArgumentException: JWT String argument cannot be null or empty.` 에러가 발생.
+2. 구글링 하면서 “모든 HTTP 요청에 대해 토큰을 검증하는 필터링을 할 필요는 없다. 일부 HTTP 요청은 이 필터를 생략해도 된다.”고 판단하게 되었다.
+3. 이를 구현하기 위해 추가 구글링 후 `doFilterInternal` 메서드 내부에서 - 토큰이 필요하지 않은 URI들은 JWT 관련 로직을 거치지 않고 다음 필터로 이동하는 로직을 추가하였다.
+4. 그런데 위 3번에는 토큰이 불필요한 URI 4개를 메서드 내에 직접 입력했어야 했다. 이런 URI가 만약 1000개가 존재한다면 일일이 입력하기는 불가능하다고 생각했고, 다시 구글링을 통해 다른 방법을 찾았다.
+5. 그 결과, SecurityConfig 클래스의 `SecurityFilterChain filterChain` 메서드 내부에서 `addFilterBefore` 를 통해 `jwtTokenAuthenticationFilter` 적용시키는 위치가 잘못된 것을 발견하였다. JWT 인증 없이도 접근 가능한 URI를 먼저 설정한 후에 `jwtTokenAuthenticationFilter` 를 위치시켜야 하는데, 순서가 바뀌었던 것이다.
+6. 이 순서를 다시 바꾸었더니 postman에서도 JWT 관련 테스트가 성공하였다. 이 경우 위 3번에 추가한 로직은 더 이상 필요하기 않기에 삭제하였다.
   
-2. 대삽질끝에 알게 된 Spring Security의 Filter 순서의 중요성 (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/%EB%8C%80%EC%82%BD%EC%A7%88%EB%81%9D%EC%97%90%20%EC%95%8C%EA%B2%8C%20%EB%90%9C%20Spring%20Security%EC%9D%98%20Filter%20%EC%88%9C%EC%84%9C%EC%9D%98%20%EC%A4%91%EC%9A%94%EC%84%B1">클릭 & detail 확인</a>)
-  
-3. JPA auditing ; 말은 거창해도 설정은 쉽다 (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/JPA%20auditing%20;%20%EB%A7%90%EC%9D%80%20%EA%B1%B0%EC%B0%BD%ED%95%B4%EB%8F%84%20%EC%84%A4%EC%A0%95%EC%9D%80%20%EC%89%BD%EB%8B%A4">클릭 & detail 확인</a>)
-  
-4. 리프레시 토큰에 대한 단위 테스트 성공 (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/%EB%A6%AC%ED%94%84%EB%A0%88%EC%8B%9C%20%ED%86%A0%ED%81%B0%EC%97%90%20%EB%8C%80%ED%95%9C%20%EB%8B%A8%EC%9C%84%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%84%B1%EA%B3%B5">클릭 & detail 확인</a>)
+- (위 트러블 슈팅 2번 참고)
+</details>
+  <br>
+<details>
+<summary>JPA dirty checking에 대해 제대로 학습할 수 있었다.</summary>
+
+- Dirty Checking ; 엔티티 매니저가 변경이 발생한 엔티티를 자동 감지하여 데이터베이스에 반영하는 것.
+    - 더 정확히는 영속성 컨테이너가 관리하는 엔티티의 상태를 감지해서, 변경된 부분이 있다면 자동으로 트랜잭션이 끝나는 시점에 데이터베이스에 반영하는 기능
+    - 여기서 말하는 dirty는 “엔티티 데이터의 변경된 부분”을 뜻하며 dirty checking은 변경된 부분을 감지한다는 의미
+- @Transactional 선언하고 해당 트랜잭션이 commit 되는 시점에 영속성 컨텍스트는 트랜잭션 쓰기 작업에 해당되는 Query를 생성. 즉 해당 트랜잭션 내부에서 영속성 컨텍스트가 엔티티의 변화를 감지하면 수정사항에 맞는 Query 문을 생성한다는 것을 알게 되었다.
+- 영속성 컨텍스트가 모든 엔티티의 변화를 감지(Dirty Checking)하는 게 아니라 영속 상태의 엔티티만 Dirty Checking 의 대상이 되며, @Transactional 외부에서 주입된 엔티티는 현재 메서드의 영속성 컨텍스트와 관련없는 엔티티이어서 dirty checking 되지 않음도 명학하게 알게 되었다.
+
+- (위 트러블 슈팅 1번 참고)
+</details>
+  <br>
+<details>
+<summary>리프레시 토큰에 대한 단위테스트에 성공하면서 테스트 코드 작성에 대한 막연한 두려움을 어느 정도 떨칠 수 있었다.</summary>
+
+- mockito (MockMvc), assertj 에 조금 더 익숙해질 수 있었다.
+- 테스트 코드 작성을 위해 구글링하면서 JWT의 구조를 자세히 공부하게 되었는데, 이 프로젝트에서 처음 액세스 토큰과 리프레시 토큰의 헤더, 페이로드, 서명부를 비교한 결과가 아래와 같다면 테스트 성공이라고 판단하게 되었다.
+    - 헤더 : 액세스 토큰과 리프레스 토큰이 일치해야 한다.
+    - 페이로드 : 서로 달라야 한다. 왜냐하면 (다른 정보는 같아도) 발급일시가 다르기 때문이다. 구체적으로는 페이로의 중간의 몇 부분만 서로 다르기 때문에 → 페이로드 앞의 20~30글자, 뒤의 20~30글자는 일치하지만 / 전체를 비교했을 때는 달라야 한다.
+    - 서명부 : 보안을 위해서 서로 완전히 달라야 한다.
+
+- (위 트러블 슈팅 4번 참고)
+</details>
+  <br>
+<details>
+<summary>TIL을 작성하는 나의 태도를 크게 바꾸었다.</summary>
+
+- 그 동안 개발에 대한 학습, 프로젝트를 진행하면서 도움이 되는 내용은 노션에 정리하였다. 다만 정제되지 않은 나만의 표현을 사용하면서 두서 없이 정리하다보니 추후에 이 내용을 필요할 때 다시 보게 되면 무슨 뜻인지 모르는 경우가 많았다.
+- 그래서 내가 봐도, 다른 사람들이 봐도 TIL 만 읽어도 어떤 상황이 벌어졌고 어떻게 해결했는지 흐름을 확인할 수 있도록 작성하기 시작하였다.
+</details>
   
 ---
   
