@@ -19,6 +19,7 @@
 4. [ERD 설계](#4erd-설계)
 5. [본인 구현 기능](#5본인-구현-기능)
 6. [트러블 슈팅 & TIL](#6트러블-슈팅--til)
+7. [회고](#7회고)
   
 - [Git commit 메시지 컨벤션](#git-commit-메시지-컨벤션)
 - [본인 구현 API Reference](#본인-구현-api-reference)
@@ -69,7 +70,6 @@
 </details>
 
 ## 6.트러블 슈팅 & TIL
-[트러블 슈팅]
 >
 > 1. JPA dirty checking 그리고 @Transactional (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/JPA%20dirty%20checking%20%EA%B7%B8%EB%A6%AC%EA%B3%A0%20@Transactional">클릭 & detail 확인</a>)
 > 
@@ -80,7 +80,8 @@
 > 4. 리프레시 토큰에 대한 단위 테스트 성공 (<a href="https://github.com/upqnu/gourmet-rcmmd/wiki/%EB%A6%AC%ED%94%84%EB%A0%88%EC%8B%9C%20%ED%86%A0%ED%81%B0%EC%97%90%20%EB%8C%80%ED%95%9C%20%EB%8B%A8%EC%9C%84%20%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%84%B1%EA%B3%B5">클릭 & detail 확인</a>)
 >
   
-[TIL]
+## 7.회고
+  
 <details>
 <summary>JWT를 통한 사용자 인증을 구현할 때 의외로 나를 가장 힘들게 했던 것은 SecurityConfig 설정이었다. 이를 수정하는 과정에서 Security filter의 순서가 조금만 잘못되어도 사용자 인증을 활용한 기능 구현에 문제가 생길 수 있음을 깨달은 계기가 되었다.</summary>
 
